@@ -1,0 +1,27 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    /* İçerikleri dikey yönde sırala */
+    height: 100vh;
+    /* Örnek bir yükseklik */
+    border: 1px solid #212121;
+    /* Sınır ekleyin */
+    background-color: #212121;
+    /* Beyaz arka plan */
+    margin: 0 auto;
+    /* Merkeze al */
+    width: 80%;
+    /* Genişlik ayarı */
+    max-width: 800px;
+    /* Maksimum genişlik */
+}
+
+.messages-wrapper {
+    overflow-y: auto;
+    flex-grow: 1;
+    /* Kapsayıcı alanı doldur */
+    display: flex;
+    flex-direction: column;
+    /* Mesajları dikey yönde sırala */
+    padding: 10px;
+}

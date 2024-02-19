@@ -1,0 +1,44 @@
+.message {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 20px;
+    max-width: 80%;
+    /* Mesaj genişliği */
+    word-wrap: break-word;
+    /* Uzun metinleri kır */
+    border: 1px solid #666;
+}
+
+/* Bot mesajları için */
+.message.bot {
+    background-color: #212121;
+    color: #ECECEC;
+    align-self: flex-start;
+    /* Sol tarafa hizala */
+}
+
+/* Kullanıcı mesajları için */
+.message.user {
+    background-color: #212121;
+    color: #ECECEC;
+    align-self: flex-end;
+    /* Sağ tarafa hizala */
+}
+
+.message-text {
+    /* Mesaj metni için stil */
+    margin-bottom: 4px;
+    text-align: left;
+    /* Gönderen adından önce biraz boşluk */
+}
+
+.sender-name {
+    font-size: 0.8em;
+    font-weight: bold;
+    /* Gönderen adını kalın yapar */
+    /* Gönderen adı için daha küçük font boyutu */
+    color: #666;
+    /* Gönderen adı için daha soluk bir renk */
+    text-align: left;
+    /* Gönderen adını sağa hizala */
+}

@@ -1,0 +1,29 @@
+.input-bar {
+    display: flex;
+    padding: 10px;
+    background-color: #212121;
+    align-items: center;
+}
+
+.input-field {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #212121;
+    border-radius: 20px;
+    outline: none;
+}
+
+.send-button {
+    padding: 10px 20px;
+    background-color: #282C34;
+    color: #DFF5CE;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
