@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/ChatContainer.css';
 import Message from './Message';
 import InputBar from './InputBar';
@@ -6,8 +6,19 @@ import QuickReplies from './QuickReplies';
 
 const ChatContainer = () => {
     const [messages, setMessages] = useState([
-        { id: 1, text: "Merhaba, bugün size nasıl yardımcı olabilirim?", sender: 'bot' },
+        { id: 1, text: "Merhaba, size nasıl yardımcı olabilirim?", sender: 'bot' },
     ]);
+    const [askForCompanyName, setAskForCompanyName] = useState(false);
+    const [companyName, setCompanyName] = useState('');
+    const [companySuggestions, setCompanySuggestions] = useState([]);
+
+    const messagesEndRef = useRef(null); // Mesajların sonunu işaretlemek için bir ref
+
+    useEffect(() => {
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 1200); // 1200 milisaniyelik bir gecikme
+    }, [messages]);
 
     const handleSendMessage = (newMessageText) => {
         const newMessage = {
@@ -19,7 +30,15 @@ const ChatContainer = () => {
 
         // "Bugün hava nasıl?" sorusunu kontrol edin
         if (newMessageText.includes("hava")) {
+            setAskForCompanyName(false);
             handleWeatherRequest(); // Hava durumu bilgisini almak için fonksiyonu çağırın
+        } else if (newMessageText.includes("gündem")) {
+            setAskForCompanyName(false);
+            handleNewsRequest();
+        } else if (newMessageText.includes("hisse")) {
+            handleFinanceRequest();
+        } else {
+            setAskForCompanyName(false);
         }
     };
 
@@ -36,7 +55,15 @@ const ChatContainer = () => {
 
         // "Bugün hava nasıl?" sorusunu kontrol edin
         if (replyText.includes("hava")) {
+            setAskForCompanyName(false);
             handleWeatherRequest(); // Hava durumu bilgisini almak için fonksiyonu çağırın
+        } else if (replyText.includes("Gündemde neler var?")) {
+            setAskForCompanyName(false);
+            handleNewsRequest();
+        } else if (replyText.includes("hisse")) {
+            handleFinanceRequest();
+        } else {
+            setAskForCompanyName(false);
         }
     };
 
@@ -47,7 +74,7 @@ const ChatContainer = () => {
                 const lon = position.coords.longitude;
                 // API isteğini yaparak hava durumu bilgisini al
                 try {
-                    const response = await fetch('http://localhost:3001/chat', {
+                    const response = await fetch('http://localhost:3001/weather', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -99,9 +126,68 @@ const ChatContainer = () => {
         }
     };
 
+    // Haber başlıklarını sırayla göndermek için bir fonksiyon
+    const handleNewsRequest = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            let index = 1;
+
+            addMessage("İşte gündemdeki popüler 5 haber:");
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Her bir haber başlığını sırayla işle
+            for (const article of data.articles) {
+                // Yeni bir mesaj oluştur ve mevcut mesaj listesine ekle
+                addMessage(index + '. ' + article.title);
+                // Her haber başlığı arasında kısa bir bekleme süresi
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                index++
+            }
+        } catch (error) {
+            console.error('Haberleri alırken hata:', error);
+            // Hata mesajını ekle
+            addMessage("Üzgünüm ama haber bilgilerini alırken bir sorun oluştu.");
+        }
+    };
+
+    const handleFinanceRequest = async () => {
+        // Kullanıcıya şirket ismi sorma
+        setAskForCompanyName(true);
+        addMessage("Hangi şirketin bilgilerini istiyorsunuz?");
+    };
+
+    const handleCompanyNameChange = async (e) => {
+        const keyword = e.target.value;
+        setCompanyName(keyword);
+
+        if (keyword.length > 1) { // En az 2 karakter girildiğinde arama yap
+            try {
+                const response = await fetch(`http://localhost:3001/search?keyword=${keyword}`, {
+                    method: 'GET', // Önerileri almak için GET isteği
+                });
+                const data = await response.json();
+                setCompanySuggestions(data['bestMatches'] || []);
+            } catch (error) {
+                console.error('Şirket önerileri alınırken hata:', error);
+            }
+        } else {
+            setCompanySuggestions([]); // Kelime silindiğinde önerileri temizle
+        }
+    };
+
+    // Mesaj eklemek için kullanılacak fonksiyon
+    const addMessage = (text) => {
+        setMessages(messages => [...messages, { id: messages.length + 1, text: text, sender: 'bot' }]);
+    };
 
     // Hızlı cevaplarınızın listesi
-    const quickReplies = ["Gündemde neler var?", "Bugün hava nasıl?"];
+    const quickReplies = ["Gündemde neler var?", "Bugün hava nasıl?", "Günlük hisse senedi fiyatları"];
 
     return (
         <div className="chat-container">
@@ -109,6 +195,24 @@ const ChatContainer = () => {
                 {messages.map((message) => (
                     <Message key={message.id} text={message.text} sender={message.sender} />
                 ))}
+                <div ref={messagesEndRef} /> {/* Bu div, listenin sonunu işaretler */}
+                {askForCompanyName && (
+                    <div className='finance-cover'>
+                        <input
+                            type="text"
+                            className="input-field-finance"
+                            value={companyName}
+                            onChange={handleCompanyNameChange}
+                            placeholder="Şirket ismi girin"
+                        />
+                        <ul className="search-results">
+                            {companySuggestions.slice(0, 5).map((suggestion) => (
+                                <li key={suggestion['1. symbol']} className="search-result-item">{suggestion['2. name']}</li>
+                            ))}
+                        </ul>
+                        <button className="send-button-finance" onClick={() => {/* Şirket bilgilerini getirme işlemi */ }}>Gönder</button>
+                    </div>
+                )}
             </div>
             <QuickReplies replies={quickReplies} onReplyClick={handleQuickReply} /> {/* Hızlı cevapları burada kullan */}
             <InputBar onSendMessage={handleSendMessage} />

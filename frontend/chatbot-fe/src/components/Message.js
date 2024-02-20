@@ -17,7 +17,7 @@ const Message = ({ text, sender }) => {
                     clearInterval(intervalId); // Metnin sonuna ulaştığında intervali durdur
                     return currentDisplayedText; // Metnin sonuna ulaşıldıysa daha fazla güncelleme yapma
                 });
-            }, 50); // Her harf için 50ms gecikme
+            }, 10); // Her harf için 50ms gecikme
 
             return () => clearInterval(intervalId); // Cleanup fonksiyonu
         }

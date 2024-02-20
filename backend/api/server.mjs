@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import getWeather from './getWeather.mjs';
+import getNews from './getNews.mjs';
+import searchCompanies from './getFinance.mjs'
 
 const app = express();
 
@@ -18,7 +20,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.post('/chat', async (req, res) => {
+app.post('/weather', async (req, res) => {
     const { message, lat, lon } = req.body;
 
     if (message.includes("hava") && lat && lon) {
@@ -64,6 +66,36 @@ app.post('/chat', async (req, res) => {
         }
     } else {
         res.json({ reply: "Buna nasıl yanıt vereceğimden emin değilim." });
+    }
+});
+
+app.post('/news', async (req, res) => {
+    // getNews fonksiyonunu çağırarak haber bilgilerini alın
+    try {
+        const newsData = await getNews();
+        res.json(newsData); // Haber bilgilerini JSON formatında döndür
+    } catch (error) {
+        res.status(500).json({ message: "Haber bilgileri alınırken bir hata oluştu." });
+    }
+});
+
+app.post('/finance', async (req, res) => {
+    // getFinance fonksiyonunu çağırarak finans bilgilerini alın
+    try {
+        const financeData = await getFinance();
+        res.json(financeData); // Finans bilgilerini JSON formatında döndür
+    } catch (error) {
+        res.status(500).json({ message: "Finans bilgileri alınırken bir hata oluştu." });
+    }
+});
+
+app.get('/search', async (req, res) => {
+    const { keyword } = req.query;
+    try {
+        const searchResults = await searchCompanies(keyword);
+        res.json(searchResults);
+    } catch (error) {
+        res.status(500).json({ message: "Şirket araması yapılırken bir hata oluştu." });
     }
 });
 

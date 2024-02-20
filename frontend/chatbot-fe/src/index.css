@@ -19,3 +19,27 @@ a:hover {
   text-decoration: underline;
   /* Fare imleci linkin üzerine geldiğinde altını çiz */
 }
+
+/* Scrollbar'ın genel genişliğini ayarla */
+::-webkit-scrollbar {
+  width: 12px;
+  /* veya istediğiniz genişlik */
+}
+
+/* Scrollbar track (arka plan) stilini ayarla */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Arka plan rengi */
+}
+
+/* Scrollbar thumb (tutamaç) stilini ayarla */
+::-webkit-scrollbar-thumb {
+  background: #282C34;
+  /* Tutamaç rengi */
+}
+
+/* Scrollbar thumb üzerine hover olduğunda */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* Hover rengi */
+}

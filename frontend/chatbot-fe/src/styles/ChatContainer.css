@@ -25,3 +25,50 @@
     /* Mesajları dikey yönde sırala */
     padding: 10px;
 }
+
+.finance-cover {
+    overflow-y: auto;
+    display: flex;
+    width: 50%;
+    padding: 10px;
+}
+
+.input-field-finance {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #212121;
+    border-radius: 20px;
+    outline: none;
+    margin-top: 10px;
+}
+
+.send-button-finance {
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #282C34;
+    color: #DFF5CE;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-results {
+    background-color: #f0f0f0;
+    /* Sonuç listesinin arka plan rengi */
+    list-style-type: none;
+    /* Liste işaretlerini kaldır */
+    padding: 0;
+    /* Varsayılan padding'i sıfırla */
+}
+
+.search-result-item {
+    background-color: #e0e0e0;
+    /* Her sonucun arka plan rengi */
+    padding: 5px 10px;
+    /* Padding */
+    margin-bottom: 2px;
+    /* Sonuçlar arası boşluk */
+    border-radius: 5px;
+    /* Kenar yuvarlaklığı */
+}
