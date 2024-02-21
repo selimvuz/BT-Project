@@ -4,6 +4,7 @@ import Message from './Message';
 import InputBar from './InputBar';
 import QuickReplies from './QuickReplies';
 import LoadingIndicator from './LoadingIndicator';
+import LordIcon from './LordIcon';
 
 const ChatContainer = () => {
     const [messages, setMessages] = useState([
@@ -22,6 +23,10 @@ const ChatContainer = () => {
         }, 1200); // 1200 milisaniyelik bir gecikme
     }, [messages]);
 
+    const clearMessages = () => {
+        setMessages([]); // Mesaj listesini boş bir diziye ayarla
+    };
+
     const handleSendMessage = (newMessageText) => {
         setIsLoading(true); // Mesaj işlenirken yükleme durumunu etkinleştir
         const newMessage = {
@@ -35,12 +40,15 @@ const ChatContainer = () => {
         setTimeout(() => {
             if (newMessageText.includes("hava")) {
                 setAskForCompanyName(false);
-                handleWeatherRequest(); // Hava durumu bilgisini almak için fonksiyonu çağırın
+                handleWeatherRequest();
+                setIsLoading(false);
             } else if (newMessageText.includes("gündem")) {
                 setAskForCompanyName(false);
                 handleNewsRequest();
+                setIsLoading(false);
             } else if (newMessageText.includes("hisse")) {
                 handleFinanceRequest();
+                setIsLoading(false);
             } else {
                 setAskForCompanyName(false);
                 const sendMessageToServer = async () => {
@@ -251,6 +259,14 @@ const ChatContainer = () => {
                         <button className="send-button-finance" onClick={() => {/* Şirket bilgilerini getirme işlemi */ }}>Gönder</button>
                     </div>
                 )}
+            </div>
+            <div style={{ position: 'absolute', top: 0, right: 0 }}>
+                <LordIcon
+                    src="https://cdn.lordicon.com/wpyrrmcq.json"
+                    trigger="hover"
+                    style={{ width: '50px', height: '50px', cursor: 'pointer', filter: "drop-shadow(2px 2px 4px #ECECEC)" }} // İkon boyutunu ayarlayın
+                    onClick={clearMessages}
+                />
             </div>
             <QuickReplies replies={quickReplies} onReplyClick={handleQuickReply} /> {/* Hızlı cevapları burada kullan */}
             <InputBar onSendMessage={handleSendMessage} />
