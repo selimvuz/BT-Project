@@ -6,18 +6,24 @@ const Message = ({ text, sender }) => {
     const messageClass = sender === 'user' ? 'message user' : 'message bot';
     const senderName = sender === 'user' ? 'Kullanıcı' : 'Bot';
 
+    // Mesajın saati için bir state ekleyin
+    const [messageTime, setMessageTime] = useState('');
+
     useEffect(() => {
         if (text) {
+            // Mesaj gönderildiğinde saati ayarlayın
+            const currentTime = new Date();
+            setMessageTime(currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+
             const intervalId = setInterval(() => {
                 setDisplayedText((currentDisplayedText) => {
-                    // Sadece mevcut metnin uzunluğu toplam metinden kısa ise güncelleme yap
                     if (currentDisplayedText.length < text.length) {
                         return currentDisplayedText + text.charAt(currentDisplayedText.length);
                     }
-                    clearInterval(intervalId); // Metnin sonuna ulaştığında intervali durdur
-                    return currentDisplayedText; // Metnin sonuna ulaşıldıysa daha fazla güncelleme yapma
+                    clearInterval(intervalId);
+                    return currentDisplayedText;
                 });
-            }, 10); // Her harf için 50ms gecikme
+            }, 10); // Her harf için 10ms gecikme
 
             return () => clearInterval(intervalId); // Cleanup fonksiyonu
         }
@@ -25,7 +31,7 @@ const Message = ({ text, sender }) => {
 
     return (
         <div className={messageClass}>
-            <div className="sender-name">{senderName}</div>
+            <div className="sender-name">{senderName} - <span className="message-time">{messageTime}</span></div>
             <div className="message-text">{displayedText}</div>
         </div>
     );

@@ -14,7 +14,7 @@
     background-color: #212121;
     color: #ECECEC;
     align-self: flex-start;
-    /* Sol tarafa hizala */
+    box-shadow: 2px 2px 4px rgba(255, 165, 0, 0.5);
 }
 
 /* Kullanıcı mesajları için */
@@ -22,7 +22,7 @@
     background-color: #212121;
     color: #ECECEC;
     align-self: flex-end;
-    /* Sağ tarafa hizala */
+    box-shadow: 2px 2px 4px #DFF5CE;
 }
 
 .message-text {
@@ -30,6 +30,11 @@
     margin-bottom: 4px;
     text-align: left;
     /* Gönderen adından önce biraz boşluk */
+}
+
+.message-time {
+    font-size: 0.75em;
+    color: #aaa;
 }
 
 .sender-name {

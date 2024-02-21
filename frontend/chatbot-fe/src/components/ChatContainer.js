@@ -3,6 +3,7 @@ import '../styles/ChatContainer.css';
 import Message from './Message';
 import InputBar from './InputBar';
 import QuickReplies from './QuickReplies';
+import LoadingIndicator from './LoadingIndicator';
 
 const ChatContainer = () => {
     const [messages, setMessages] = useState([
@@ -11,6 +12,7 @@ const ChatContainer = () => {
     const [askForCompanyName, setAskForCompanyName] = useState(false);
     const [companyName, setCompanyName] = useState('');
     const [companySuggestions, setCompanySuggestions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const messagesEndRef = useRef(null); // Mesajların sonunu işaretlemek için bir ref
 
@@ -21,6 +23,7 @@ const ChatContainer = () => {
     }, [messages]);
 
     const handleSendMessage = (newMessageText) => {
+        setIsLoading(true); // Mesaj işlenirken yükleme durumunu etkinleştir
         const newMessage = {
             id: messages.length + 1,
             text: newMessageText,
@@ -28,18 +31,52 @@ const ChatContainer = () => {
         };
         setMessages([...messages, newMessage]);
 
-        // "Bugün hava nasıl?" sorusunu kontrol edin
-        if (newMessageText.includes("hava")) {
-            setAskForCompanyName(false);
-            handleWeatherRequest(); // Hava durumu bilgisini almak için fonksiyonu çağırın
-        } else if (newMessageText.includes("gündem")) {
-            setAskForCompanyName(false);
-            handleNewsRequest();
-        } else if (newMessageText.includes("hisse")) {
-            handleFinanceRequest();
-        } else {
-            setAskForCompanyName(false);
-        }
+        // Örnek olarak, botun cevabını simüle eden bir gecikme ekledim
+        setTimeout(() => {
+            if (newMessageText.includes("hava")) {
+                setAskForCompanyName(false);
+                handleWeatherRequest(); // Hava durumu bilgisini almak için fonksiyonu çağırın
+            } else if (newMessageText.includes("gündem")) {
+                setAskForCompanyName(false);
+                handleNewsRequest();
+            } else if (newMessageText.includes("hisse")) {
+                handleFinanceRequest();
+            } else {
+                setAskForCompanyName(false);
+                const sendMessageToServer = async () => {
+                    try {
+                        const response = await fetch('http://localhost:5000/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ message: newMessageText }),
+                        });
+                        const data = await response.json();
+
+                        // Sunucudan alınan yanıtı bir bot mesajı olarak ekleyin
+                        const replyMessage = {
+                            id: messages.length + 1,
+                            text: data.reply,
+                            sender: 'bot',
+                        };
+                        setMessages(messages => [...messages, replyMessage]);
+                        setIsLoading(false);
+                    } catch (error) {
+                        console.error('Mesajı gönderirken hata oluştu:', error);
+                        // Hata durumunda kullanıcıya bilgi veren bir mesaj göster
+                        const errorMessage = {
+                            id: messages.length + 1,
+                            text: "Üzgünüm, mesajınızı işlerken bir sorun oluştu.",
+                            sender: 'bot',
+                        };
+                        setMessages(messages => [...messages, errorMessage]);
+                        setIsLoading(false);
+                    }
+                };
+                sendMessageToServer();
+            }
+        }, 5000); // 3 saniyelik bir gecikme simüle edin
     };
 
 
@@ -195,6 +232,7 @@ const ChatContainer = () => {
                 {messages.map((message) => (
                     <Message key={message.id} text={message.text} sender={message.sender} />
                 ))}
+                {isLoading && <LoadingIndicator />} {/* Yükleme durumuna göre göster */}
                 <div ref={messagesEndRef} /> {/* Bu div, listenin sonunu işaretler */}
                 {askForCompanyName && (
                     <div className='finance-cover'>

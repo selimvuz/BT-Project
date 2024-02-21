@@ -99,6 +99,24 @@ app.get('/search', async (req, res) => {
     }
 });
 
+app.post('/chat', async (req, res) => {
+    const userMessage = req.body.message;
+    try {
+        const pythonResponse = await fetch('http://localhost:5000/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+        });
+        const data = await pythonResponse.json();
+        res.json({ reply: data.reply });
+    } catch (error) {
+        console.error('Python servisine istek yapılırken hata oluştu:', error);
+        res.status(500).json({ message: "Sorgu işlenirken bir sorun oluştu." });
+    }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
