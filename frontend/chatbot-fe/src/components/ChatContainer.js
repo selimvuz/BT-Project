@@ -24,7 +24,17 @@ const ChatContainer = () => {
     }, [messages]);
 
     const clearMessages = () => {
-        setMessages([]); // Mesaj listesini boş bir diziye ayarla
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            const newMessage = {
+                id: 999,
+                text: "Daha temiz gözüküyor.",
+                sender: 'bot'
+            };
+            setMessages([newMessage]);
+        }, 1000)
+        setMessages([]);
     };
 
     const handleSendMessage = (newMessageText) => {
@@ -260,7 +270,7 @@ const ChatContainer = () => {
                     </div>
                 )}
             </div>
-            <div style={{ position: 'absolute', top: 0, right: 0 }}>
+            <div style={{ position: 'absolute', top: 0, right: 45 }}>
                 <LordIcon
                     src="https://cdn.lordicon.com/wpyrrmcq.json"
                     trigger="hover"

@@ -5,7 +5,7 @@ const LoadingIndicator = () => {
     return (
         <div className="loading-container">
             <div className="loading-spinner"></div>
-            <p className='loading-text'>Düşünüyorum...</p>
+            <p className='loading-text'>İşleniyor...</p>
         </div>
     );
 };
