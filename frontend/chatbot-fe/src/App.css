@@ -1,18 +1,49 @@
 .app {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 
-.app-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-  font-size: 24px;
+.main-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 100vh;
+  z-index: 3;
 }
 
-.chat-container {
-  margin: 20px;
+.app-header {
+  position: fixed;
+  background-color: #282c34;
   padding: 20px;
-  border: 1px solid #ddd;
-  height: 400px;
-  overflow-y: auto;
+  color: #DFF5CE;
+  font-size: 20px;
+  height: 20px;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.sidebar {
+  position: fixed;
+  flex: 0 0 250px;
+  z-index: 6;
+  margin-top: 60px;
+}
+
+.ps-menu-root {
+  background-color: #282c34 !important;
+  color: #DFF5CE !important;
+}
+
+.ps-menu-button {
+  background-color: #282c34 !important;
+  color: #DFF5CE !important;
+  border: 1px solid #666;
+}
+
+.span.ps-menu-label {
+  color: black;
 }

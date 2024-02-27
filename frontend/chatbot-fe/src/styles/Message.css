@@ -3,9 +3,7 @@
     padding: 10px;
     border-radius: 20px;
     max-width: 80%;
-    /* Mesaj genişliği */
     word-wrap: break-word;
-    /* Uzun metinleri kır */
     border: 1px solid #666;
 }
 

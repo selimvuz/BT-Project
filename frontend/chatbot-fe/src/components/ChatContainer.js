@@ -29,7 +29,7 @@ const ChatContainer = () => {
             setIsLoading(false);
             const newMessage = {
                 id: 999,
-                text: "Daha temiz gözüküyor.",
+                text: "Sohbeti süpürdüm.",
                 sender: 'bot'
             };
             setMessages([newMessage]);
