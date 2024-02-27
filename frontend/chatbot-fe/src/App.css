@@ -33,17 +33,8 @@
   margin-top: 60px;
 }
 
-.ps-menu-root {
-  background-color: #282c34 !important;
-  color: #DFF5CE !important;
-}
-
 .ps-menu-button {
-  background-color: #282c34 !important;
+  background-color: #212121 !important;
   color: #DFF5CE !important;
-  border: 1px solid #666;
-}
-
-.span.ps-menu-label {
-  color: black;
+  border: 1px solid #4d2e2e;
 }
