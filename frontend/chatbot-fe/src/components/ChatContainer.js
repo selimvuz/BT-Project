@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/ChatContainer.css";
 import "../styles/LordIcon.css";
+import "../styles/Finance.css";
 import Message from "./Message";
 import InputBar from "./InputBar";
 import QuickReplies, { quickReplies } from "./QuickReplies";
@@ -9,6 +10,10 @@ import LordIcon from "./LordIcon";
 import { fetchWeather } from "../services/weatherService";
 import { handleGeoLocationError } from "../services/errorService";
 import { handleNewsRequest } from "../services/newsService";
+import {
+  processUserInputForSuggestions,
+  getStockInformation,
+} from "../services/financeService";
 import { sendMessage } from "../services/chatService";
 
 const ChatContainer = () => {
@@ -138,33 +143,74 @@ const ChatContainer = () => {
     }
   };
 
-  const handleFinanceRequest = async () => {
-    // Kullanıcıya şirket ismi sorma
-    setAskForCompanyName(true);
-    addMessage("Hangi şirketin bilgilerini istiyorsunuz?");
+  // Öneri listesini güncelleme fonksiyonu
+  const updateSuggestionsList = (suggestions) => {
+    setCompanySuggestions(suggestions);
   };
 
-  const handleCompanyNameChange = async (e) => {
+  // Kullanıcıya bilgi sorma fonksiyonu
+  const askUserForInfo = (message) => {
+    setAskForCompanyName(true);
+    addMessage(message);
+  };
+
+  // Finansal bilgi isteğini işleme
+  const handleFinanceRequest = () => {
+    askUserForInfo("Hangi şirketin bilgilerini istiyorsunuz?");
+  };
+
+  let debounceTimer;
+  const debounce = (func, delay) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(func, delay);
+  };
+
+  // Şirket adı değişikliğini işleme
+  const handleCompanyNameChange = (e) => {
     const keyword = e.target.value;
     setCompanyName(keyword);
 
-    if (keyword.length > 1) {
-      // En az 2 karakter girildiğinde arama yap
-      try {
-        const response = await fetch(
-          `http://localhost:3001/search?keyword=${keyword}`,
-          {
-            method: "GET", // Önerileri almak için GET isteği
-          }
+    // Debounce uygulama
+    debounce(() => {
+      if (keyword.length > 2) {
+        // Minimum 3 karakter kontrolü
+        processUserInputForSuggestions(
+          keyword,
+          setCompanyName,
+          updateSuggestionsList
         );
-        const data = await response.json();
-        setCompanySuggestions(data["bestMatches"] || []);
-      } catch (error) {
-        console.error("Şirket önerileri alınırken hata:", error);
       }
-    } else {
-      setCompanySuggestions([]);
+    }, 500);
+  };
+
+  // Öneri seçme ve hisse bilgilerini alırken yükleme durumunu yönetme
+  const handleSelectCompany = async (symbol) => {
+    setAskForCompanyName(false);
+    setIsLoading(true);
+    try {
+      const stockInfo = await getStockInformation(symbol);
+      if (stockInfo["Global Quote"]) {
+        const info = stockInfo["Global Quote"];
+        const message = `
+          Şirket: ${info["01. symbol"]}\n
+          Son Fiyat: ${info["05. price"]}\n
+          Değişim: ${info["09. change"]} (${info["10. change percent"]})\n
+          Günün En Yüksek Fiyatı: ${info["03. high"]}\n
+          Günün En Düşük Fiyatı: ${info["04. low"]}\n
+          Açılış Fiyatı: ${info["02. open"]}\n
+          Önceki Kapanış: ${info["08. previous close"]}
+        `;
+        addMessage(message);
+      } else {
+        addMessage("Hisse bilgisi alınamadı.");
+      }
+    } catch (error) {
+      console.error("Hisse bilgileri alınırken hata oluştu:", error);
+      addMessage("Hisse bilgilerini alırken bir sorun oluştu.");
+    } finally {
+      setIsLoading(false);
     }
+    setAskForCompanyName(false);
   };
 
   // Mesaj eklemek için kullanılacak fonksiyon
@@ -185,8 +231,8 @@ const ChatContainer = () => {
             sender={message.sender}
           />
         ))}
-        {isLoading && <LoadingIndicator />} {/* Yükleme durumuna göre göster */}
-        <div ref={messagesEndRef} /> {/* Bu div, listenin sonunu işaretler */}
+        {isLoading && <LoadingIndicator />}
+        <div ref={messagesEndRef} />
         {askForCompanyName && (
           <div className="finance-cover">
             <input
@@ -201,19 +247,12 @@ const ChatContainer = () => {
                 <li
                   key={suggestion["1. symbol"]}
                   className="search-result-item"
+                  onClick={() => handleSelectCompany(suggestion["1. symbol"])}
                 >
                   {suggestion["2. name"]}
                 </li>
               ))}
             </ul>
-            <button
-              className="send-button-finance"
-              onClick={() => {
-                /* Şirket bilgilerini getirme işlemi */
-              }}
-            >
-              Gönder
-            </button>
           </div>
         )}
       </div>

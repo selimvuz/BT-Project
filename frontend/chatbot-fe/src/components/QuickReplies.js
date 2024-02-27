@@ -16,7 +16,6 @@ const QuickReplies = ({ replies, onReplyClick }) => {
           key={index}
           className="quick-reply-button"
           onClick={() => onReplyClick(reply)}
-          disabled={index === 2}
         >
           {reply}
         </button>
