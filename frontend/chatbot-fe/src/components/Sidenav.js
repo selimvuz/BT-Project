@@ -109,6 +109,16 @@ function Sidenav() {
             <MenuItem>Trendyol LLM</MenuItem>
             <MenuItem>Gemini Pro</MenuItem>
           </SubMenu>
+          <SubMenu label="Karakterler">
+            <MenuItem>Gelecekten Bir Yolcu</MenuItem>
+            <MenuItem>Sherlock Holmes</MenuItem>
+            <MenuItem>Socrates</MenuItem>
+            <MenuItem>YTÜ Profesörü</MenuItem>
+          </SubMenu>
+          <SubMenu label="Diğer">
+            <MenuItem>İletişim</MenuItem>
+            <MenuItem>Hakkında</MenuItem>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </div>

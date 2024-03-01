@@ -41,7 +41,7 @@ function Register() {
             <Alert
               variant={registerStatus.type}
               onClose={() => setRegisterStatus(null)}
-              className="alert-custom"
+
             >
               {registerStatus.message}
             </Alert>
