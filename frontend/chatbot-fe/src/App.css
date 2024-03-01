@@ -16,7 +16,7 @@
   position: fixed;
   background-color: #282c34;
   padding: 20px;
-  color: #DFF5CE;
+  color: #dff5ce;
   font-size: 20px;
   height: 20px;
   width: 100%;
@@ -24,17 +24,4 @@
   align-items: center;
   justify-content: center;
   z-index: 5;
-}
-
-.sidebar {
-  position: fixed;
-  flex: 0 0 250px;
-  z-index: 6;
-  margin-top: 60px;
-}
-
-.ps-menu-button {
-  background-color: #212121 !important;
-  color: #DFF5CE !important;
-  border: 1px solid #4d2e2e;
 }

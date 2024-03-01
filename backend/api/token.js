@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization");
@@ -10,7 +10,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = verify(token.split(" ")[1], secretKey);
+    const decoded = jwt.verify(token.split(" ")[1], secretKey);
     req.user = decoded;
 
     next();
@@ -33,4 +33,6 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-export default authenticateToken;
+module.exports = {
+  authenticateToken,
+};

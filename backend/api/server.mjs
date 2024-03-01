@@ -3,8 +3,7 @@ import cors from "cors";
 import getWeather from "./getWeather.mjs";
 import getNews from "./getNews.mjs";
 import searchCompanies from "./getFinance.mjs";
-import { authRoutes } from "./auth";
-import authenticateToken from "./token";
+import { authRoutes } from "./auth.js";
 
 const app = express();
 
@@ -150,18 +149,6 @@ app.post("/chat", async (req, res) => {
   } catch (error) {
     console.error("Python servisine istek yapılırken hata oluştu:", error);
     res.status(500).json({ message: "Sorgu işlenirken bir sorun oluştu." });
-  }
-});
-
-app.post("/auth/login", (req, res) => {
-  const { email, password } = req.body;
-  if (email === "user@example.com" && password === "password123") {
-    // Kullanıcı doğrulanırsa JWT token oluşturun
-    const token = jwt.sign({ email }, "your_secret_key", { expiresIn: "1h" });
-    res.json({ token });
-  } else {
-    // Kullanıcı doğrulanamazsa hata mesajı gönderin
-    res.status(401).send("Kullanıcı adı veya şifre hatalı");
   }
 });
 

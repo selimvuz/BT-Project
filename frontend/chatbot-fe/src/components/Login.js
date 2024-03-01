@@ -48,7 +48,7 @@ function Login() {
             <Alert
               variant={loginStatus.type}
               onClose={() => setLoginStatus(null)}
-              dismissible
+              className="alert-custom"
             >
               {loginStatus.message}
             </Alert>
@@ -62,8 +62,13 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Form.Text className="text-muted">
-                Bilginizi kimseyle paylaşmayacağız.
+              <Form.Text
+                className="text-muted"
+                style={{
+                  fontSize: "10px",
+                }}
+              >
+                Bilgilerinizi kimseyle paylaşmayacağız.
               </Form.Text>
             </Form.Group>
 
@@ -76,15 +81,21 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check
-                className="checkB"
-                type="checkbox"
-                label="Beni hatırla"
-              />
-            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="formBasicCheckbox"
+            ></Form.Group>
             <Button
-              style={{ backgroundColor: "#D1E7DD", color: "black" }}
+              style={{
+                backgroundColor: "#282C34",
+                color: "#DFF5CE",
+                cursor: "pointer",
+                border: "none",
+                borderRadius: "20px",
+                outline: "none",
+                padding: "5px 20px",
+                marginTop: "14px",
+              }}
               variant="primary"
               type="submit"
             >

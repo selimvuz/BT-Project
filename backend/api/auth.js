@@ -3,7 +3,7 @@ const sqlite3 = require("sqlite3");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const authenticateToken = require("./token").default;
+const { authenticateToken } = require("./token.js");
 
 const authRoutes = express();
 
