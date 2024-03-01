@@ -1,10 +1,17 @@
-import React from "react";
 import "./App.css";
 import "./components/ChatContainer";
 import ChatContainer from "./components/ChatContainer";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import React, { useState } from "react";
+import Login from "./components/Login";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -15,15 +22,18 @@ function App() {
           <Sidebar>
             <Menu>
               <SubMenu label="Kullanıcı">
-                <MenuItem> -- Giriş </MenuItem>
-                <MenuItem> -- Kayıt </MenuItem>
-              </SubMenu>
-              <SubMenu label="Sohbet Geçmişi">
-                <MenuItem> -- </MenuItem>
+                {!isLoggedIn ? (
+                  <>
+                    <MenuItem> Giriş</MenuItem>
+                    <MenuItem> Kayıt </MenuItem>
+                  </>
+                ) : (
+                  <MenuItem> Profil </MenuItem>
+                )}
               </SubMenu>
               <SubMenu label="Modeller">
-                <MenuItem> -- Trendyol LLM </MenuItem>
-                <MenuItem> -- Gemini Pro </MenuItem>
+                <MenuItem>Trendyol LLM</MenuItem>
+                <MenuItem>Gemini Pro</MenuItem>
               </SubMenu>
             </Menu>
           </Sidebar>

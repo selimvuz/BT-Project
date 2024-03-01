@@ -1,0 +1,48 @@
+.register-overlay {
+    width: 15vw;
+}
+
+.register-box {
+    width: 15vw;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.checkTerms {
+    text-align: left;
+    margin-left: 20px;
+}
+
+@media (min-width: 1270px) and (max-width: 1921vw) {
+    .register-overlay {
+        width: 400px;
+    }
+
+    .register-box {
+        width: 400px;
+    }
+}
+
+@media (min-width: 991px) and (max-width: 1270px) {
+    .register-overlay {
+        width: 35vw;
+    }
+
+    .register-box {
+        width: 35vw;
+    }
+}
+
+@media (max-width: 991px) {
+    .register-overlay {
+        width: 92vw;
+    }
+
+    .register-box {
+        width: 92vw;
+    }
+}
