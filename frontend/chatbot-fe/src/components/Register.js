@@ -7,8 +7,37 @@ function Register() {
   const [password, setPassword] = useState("");
   const [registerStatus, setRegisterStatus] = useState(null);
 
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const isValidPassword = (password) => {
+    // Şifrenin en az 6 karakter uzunluğunda olmasını, en az bir büyük harf, bir küçük harf ve bir rakam içermesini istiyoruz.
+    const minLength = password.length >= 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    return minLength && hasUpperCase && hasLowerCase && hasNumbers;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      setRegisterStatus({
+        type: "warning",
+        message: "Geçersiz email adresi.",
+      });
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      setRegisterStatus({
+        type: "warning",
+        message: "Şifreniz güvenli değil.",
+      });
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:3001/auth/register", {
@@ -41,7 +70,6 @@ function Register() {
             <Alert
               variant={registerStatus.type}
               onClose={() => setRegisterStatus(null)}
-
             >
               {registerStatus.message}
             </Alert>
