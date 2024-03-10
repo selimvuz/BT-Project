@@ -72,8 +72,8 @@ function Sidenav() {
           <SubMenu label="Kullanıcı">
             {!isLoggedIn ? (
               <>
-                <MenuItem onClick={() => setShowLogin(!showLogin)}>
-                  Giriş
+                <MenuItem className="menu-item" onClick={() => setShowLogin(!showLogin)}>
+                 - Giriş
                 </MenuItem>
                 <LoginPortal
                   isOpen={showLogin}
@@ -81,8 +81,8 @@ function Sidenav() {
                 >
                   <Login />
                 </LoginPortal>
-                <MenuItem onClick={() => setShowRegister(!showRegister)}>
-                  Kayıt
+                <MenuItem className="menu-item" onClick={() => setShowRegister(!showRegister)}>
+                 - Kayıt
                 </MenuItem>
                 <LoginPortal
                   isOpen={showRegister}
@@ -93,7 +93,7 @@ function Sidenav() {
               </>
             ) : (
               <>
-                <MenuItem>Profil</MenuItem>
+                <MenuItem className="menu-item">Profil</MenuItem>
                 <MenuItem
                   onClick={() => {
                     localStorage.removeItem("authToken"); // Çıkış yapılırken token'ı kaldır
@@ -106,18 +106,18 @@ function Sidenav() {
             )}
           </SubMenu>
           <SubMenu label="Modeller">
-            <MenuItem>Trendyol LLM</MenuItem>
-            <MenuItem>Gemini Pro</MenuItem>
+            <MenuItem className="menu-item">- Trendyol LLM</MenuItem>
+            <MenuItem className="menu-item">- Gemini Pro</MenuItem>
           </SubMenu>
           <SubMenu label="Karakterler">
-            <MenuItem>Gelecekten Bir Yolcu</MenuItem>
-            <MenuItem>Sherlock Holmes</MenuItem>
-            <MenuItem>Socrates</MenuItem>
-            <MenuItem>YTÜ Profesörü</MenuItem>
+            <MenuItem className="menu-item">- Gelecekten Bir Yolcu</MenuItem>
+            <MenuItem className="menu-item">- Sherlock Holmes</MenuItem>
+            <MenuItem className="menu-item">- Socrates</MenuItem>
+            <MenuItem className="menu-item">- YTÜ Profesörü</MenuItem>
           </SubMenu>
           <SubMenu label="Diğer">
-            <MenuItem>İletişim</MenuItem>
-            <MenuItem>Hakkında</MenuItem>
+            <MenuItem className="menu-item">- İletişim</MenuItem>
+            <MenuItem className="menu-item">- Hakkında</MenuItem>
           </SubMenu>
         </Menu>
       </Sidebar>
