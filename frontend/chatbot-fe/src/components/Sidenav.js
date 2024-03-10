@@ -93,7 +93,7 @@ function Sidenav() {
               </>
             ) : (
               <>
-                <MenuItem className="menu-item">Profil</MenuItem>
+                <MenuItem className="menu-item">- Profil</MenuItem>
                 <MenuItem
                   onClick={() => {
                     localStorage.removeItem("authToken"); // Çıkış yapılırken token'ı kaldır
