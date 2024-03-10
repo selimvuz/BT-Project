@@ -20,6 +20,19 @@ const generateToken = (user) => {
   return token;
 };
 
+const isValidEmail = (email) => {
+  return /\S+@\S+\.\S+/.test(email);
+};
+
+const isValidPassword = (password) => {
+  return (
+    password.length >= 6 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /\d/.test(password)
+  );
+};
+
 authRoutes.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -47,6 +60,10 @@ authRoutes.post("/login", async (req, res) => {
 
 authRoutes.post("/register", async (req, res) => {
   const { email, password } = req.body;
+
+  if (!isValidEmail(email) || !isValidPassword(password)) {
+    return res.status(400).json({ error: "Invalid email or password format." });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
 

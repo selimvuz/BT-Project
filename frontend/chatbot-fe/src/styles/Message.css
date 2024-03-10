@@ -7,7 +7,6 @@
     border: 1px solid #666;
 }
 
-/* Bot mesajları için */
 .message.bot {
     background-color: #212121;
     color: #ECECEC;
@@ -15,7 +14,6 @@
     box-shadow: 2px 2px 4px rgba(255, 165, 0, 0.5);
 }
 
-/* Kullanıcı mesajları için */
 .message.user {
     background-color: #212121;
     color: #ECECEC;
@@ -24,10 +22,8 @@
 }
 
 .message-text {
-    /* Mesaj metni için stil */
     margin-bottom: 4px;
     text-align: left;
-    /* Gönderen adından önce biraz boşluk */
 }
 
 .message-time {
@@ -38,10 +34,6 @@
 .sender-name {
     font-size: 0.8em;
     font-weight: bold;
-    /* Gönderen adını kalın yapar */
-    /* Gönderen adı için daha küçük font boyutu */
     color: #666;
-    /* Gönderen adı için daha soluk bir renk */
     text-align: left;
-    /* Gönderen adını sağa hizala */
 }

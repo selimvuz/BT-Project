@@ -1,19 +1,17 @@
 .alert-success {
-  background-color: #28a745;
+  background-color: #212121;
   border: #721c24;
   border-radius: 10px;
-  color: #212121 !important;
+  color: #DFF5CE !important;
   font-size: 14px;
-  font-weight: bold;
 }
 
 .alert-warning {
-  background-color: #ffc107;
+  background-color: #212121;
   border: #721c24;
   border-radius: 10px;
-  color: #212121 !important;
+  color: #DFF5CE !important;
   font-size: 14px;
-  font-weight: bold;
 }
 
 .register-box {
