@@ -111,9 +111,8 @@ function Sidenav() {
           </SubMenu>
           <SubMenu label="Karakterler">
             <MenuItem className="menu-item">- Gelecekten Bir Yolcu</MenuItem>
-            <MenuItem className="menu-item">- Sherlock Holmes</MenuItem>
-            <MenuItem className="menu-item">- Socrates</MenuItem>
-            <MenuItem className="menu-item">- YTÜ Profesörü</MenuItem>
+            <MenuItem className="menu-item">- Şaka Ustası Leo</MenuItem>
+            <MenuItem className="menu-item">- Sokrates</MenuItem>
           </SubMenu>
           <SubMenu label="Diğer">
             <MenuItem className="menu-item">- İletişim</MenuItem>
