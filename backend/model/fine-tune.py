@@ -1,79 +1,72 @@
 import pandas as pd
 from datasets import Dataset
-from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
+from peft import LoraConfig, get_peft_model, TaskType
 from trl import SFTTrainer
 
-# Tokenizer ve modeli yüklemek
-tokenizer = AutoTokenizer.from_pretrained("Trendyol/Trendyol-LLM-7b-chat-v1.0")
-model = AutoModelForCausalLM.from_pretrained("Trendyol/Trendyol-LLM-7b-chat-v1.0")
+# Veri kümesini yükle
+df = pd.read_csv('karakterler.csv', quotechar='"')
+df['text'] = df.apply(
+    lambda row: f"{row['etiket']}:{row['soru']}\n{row['cevap']}", axis=1)
+dataset = Dataset.from_pandas(df[['text']])
 
-# Pad token eksikse, onu eos token olarak ayarla
-if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
+# Tokenizer ve model yükle
+model_name = "Trendyol/Trendyol-LLM-7b-chat-v1.0"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-# CSV dosyasını yükle ve gereken sütunları birleştir
-data = pd.read_csv("datasets/karakterler.csv", quotechar='"', escapechar='\\')
-data['input'] = data['etiket'] + data['soru'] + tokenizer.eos_token + data['cevap']
-data = data.dropna(subset=['input', 'cevap'])
+# 8-bit quantized modeli yükle
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    load_in_8bit=True,
+    device_map="auto"
+)
 
-# Verileri eğitim ve doğrulama setleri olarak ayır
-train_data, eval_data = train_test_split(data, test_size=0.1)
+# LoRA yapılandırması ve model adaptasyonu
+lora_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=8,
+    lora_alpha=32,
+    lora_dropout=0.1,
+    bias="none",
+    target_modules=["q_proj", "v_proj"]
+)
+model = get_peft_model(model, lora_config)
 
-# Hugging Face Dataset nesnelerine dönüştür
-train_dataset = Dataset.from_pandas(train_data)
-eval_dataset = Dataset.from_pandas(eval_data)
-
-# Veri tokenizasyon fonksiyonu
+# Veri kümesini tokenize et
 def tokenize_function(examples):
-    inputs = tokenizer(examples['input'], truncation=True,
-                       max_length=512, padding="max_length")
-    inputs['labels'] = inputs.input_ids.detach().clone()
-    eos_mask = inputs.input_ids == tokenizer.eos_token_id
-    for i in range(inputs.input_ids.shape[0]):
-        eos_indices = (eos_mask[i] == True).nonzero(as_tuple=True)[0]
-        if len(eos_indices) > 0:
-            first_eos_idx = eos_indices[0]
-            inputs['labels'][i][:first_eos_idx + 1] = -100
-        else:
-            inputs['labels'][i][:] = -100
-    return inputs
+    return tokenizer(examples["text"], padding="max_length", truncation=True)
 
-# Tokenizasyon işlemi
-tokenized_train_datasets = train_dataset.map(tokenize_function, batched=True)
-tokenized_eval_datasets = eval_dataset.map(tokenize_function, batched=True)
+tokenized_dataset = dataset.map(tokenize_function, batched=True)
 
 # Eğitim argümanları
 training_args = TrainingArguments(
-    output_dir='./results',
-    num_train_epochs=3,
-    gradient_accumulation_steps=2,
+    output_dir="./results",
+    overwrite_output_dir=True,
     per_device_train_batch_size=1,
-    per_device_eval_batch_size=1,
-    warmup_steps=250,
-    weight_decay=0.01,
+    gradient_accumulation_steps=32,
+    num_train_epochs=3,
+    save_steps=10_000,
+    save_total_limit=2,
+    logging_steps=10,
     logging_dir='./logs',
-    logging_steps=100,
-    do_train=True,
-    do_eval=True,
-    evaluation_strategy="steps",
-    eval_steps=500,
-    save_total_limit=5,
-    load_best_model_at_end=True,
+    learning_rate=2e-5,
+    bf16=True,
+    optim="adamw_torch",
+    report_to="none",
 )
 
-# Trainer nesnesi
+# Trainer oluşturma
 trainer = SFTTrainer(
     model=model,
     args=training_args,
-    train_dataset=tokenized_train_datasets,
-    eval_dataset=tokenized_eval_datasets,
-    tokenizer=tokenizer
+    train_dataset=tokenized_dataset,
+    dataset_text_field="text",
+    max_seq_length=512,
 )
 
-# Model eğitimi
+# Eğitimi başlat
 trainer.train()
 
-# Modeli kaydet
-model.save_pretrained("./Epoch_v0.1")
-tokenizer.save_pretrained("./Epoch_v0.1")
+# Modeli ve tokenizer'ı kaydet
+model.save_pretrained("./Epoch_model")
+tokenizer.save_pretrained("./Epoch_tokenizer")
