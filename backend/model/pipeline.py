@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Tokenizer ve fine-tune edilmiş modeli yükle
-model_name = "./Epoch_model_v0.2"
-tokenizer_name = "./Epoch_tokenizer_v0.2" 
+model_name = "./Epoch_v0.2"
+tokenizer_name = "./Epoch_v0.2" 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
