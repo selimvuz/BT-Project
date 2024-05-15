@@ -5,15 +5,20 @@ import Login from "./Login";
 import Register from "./Register";
 import "../styles/Sidenav.css";
 
-function Sidenav({onCharacterSelect}) {
+function Sidenav({ onCharacterSelect }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [activeItem, setActiveItem] = useState(null); // Aktif butonun state'i
   const sidenavRef = useRef();
 
   const handleCharacterSelect = (character) => {
     onCharacterSelect(character);
-    console.log(character)
+    console.log(character);
+  };
+
+  const handleItemClick = (item) => {
+    setActiveItem(item);
   };
 
   // Token'ı doğrulama işlevi
@@ -44,7 +49,6 @@ function Sidenav({onCharacterSelect}) {
       setIsLoggedIn(false);
     }
   };
-  
 
   useEffect(() => {
     validateToken(); // Bileşen yüklendiğinde token'ı doğrula
@@ -78,8 +82,14 @@ function Sidenav({onCharacterSelect}) {
           <SubMenu label="Kullanıcı">
             {!isLoggedIn ? (
               <>
-                <MenuItem className="menu-item" onClick={() => setShowLogin(!showLogin)}>
-                 - Giriş
+                <MenuItem
+                  className="menu-item"
+                  onClick={() => {
+                    setShowLogin(!showLogin);
+                    handleItemClick('login');
+                  }}
+                >
+                  {activeItem === 'login' ? '+ Giriş' : '- Giriş'}
                 </MenuItem>
                 <LoginPortal
                   isOpen={showLogin}
@@ -87,8 +97,14 @@ function Sidenav({onCharacterSelect}) {
                 >
                   <Login />
                 </LoginPortal>
-                <MenuItem className="menu-item" onClick={() => setShowRegister(!showRegister)}>
-                 - Kayıt
+                <MenuItem
+                  className="menu-item"
+                  onClick={() => {
+                    setShowRegister(!showRegister);
+                    handleItemClick('register');
+                  }}
+                >
+                  {activeItem === 'register' ? '+ Kayıt' : '- Kayıt'}
                 </MenuItem>
                 <LoginPortal
                   isOpen={showRegister}
@@ -99,11 +115,17 @@ function Sidenav({onCharacterSelect}) {
               </>
             ) : (
               <>
-                <MenuItem className="menu-item">- Profil</MenuItem>
+                <MenuItem
+                  className="menu-item"
+                  onClick={() => handleItemClick('profile')}
+                >
+                  {activeItem === 'profile' ? '+ Profil' : '- Profil'}
+                </MenuItem>
                 <MenuItem
                   onClick={() => {
                     localStorage.removeItem("authToken"); // Çıkış yapılırken token'ı kaldır
                     setIsLoggedIn(false); // Kullanıcı durumunu güncelle
+                    handleItemClick(null);
                   }}
                 >
                   Çıkış Yap
@@ -112,17 +134,55 @@ function Sidenav({onCharacterSelect}) {
             )}
           </SubMenu>
           <SubMenu label="Modeller">
-            <MenuItem className="menu-item">- Trendyol LLM</MenuItem>
-            <MenuItem className="menu-item">- Gemini Pro</MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => handleItemClick('epoch')}
+            >
+              {activeItem === 'epoch' ? '+ Epoch v0.2' : '- Epoch v0.2'}
+            </MenuItem>
           </SubMenu>
           <SubMenu label="Karakterler">
-            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Gelecekten Bir Yolcu")}>- Gelecekten Bir Yolcu</MenuItem>
-            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Şaka Ustası Leo")}>- Şaka Ustası Leo</MenuItem>
-            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Sokrates")}>- Sokrates</MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => {
+                handleCharacterSelect("Gelecekten Bir Yolcu");
+                handleItemClick('traveler');
+              }}
+            >
+              {activeItem === 'traveler' ? '+ Gelecekten Bir Yolcu' : '- Gelecekten Bir Yolcu'}
+            </MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => {
+                handleCharacterSelect("Şaka Ustası Leo");
+                handleItemClick('leo');
+              }}
+            >
+              {activeItem === 'leo' ? '+ Şaka Ustası Leo' : '- Şaka Ustası Leo'}
+            </MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => {
+                handleCharacterSelect("Sokrates");
+                handleItemClick('socrates');
+              }}
+            >
+              {activeItem === 'socrates' ? '+ Sokrates' : '- Sokrates'}
+            </MenuItem>
           </SubMenu>
           <SubMenu label="Diğer">
-            <MenuItem className="menu-item">- İletişim</MenuItem>
-            <MenuItem className="menu-item">- Hakkında</MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => handleItemClick('contact')}
+            >
+              {activeItem === 'contact' ? '+ İletişim' : '- İletişim'}
+            </MenuItem>
+            <MenuItem
+              className="menu-item"
+              onClick={() => handleItemClick('about')}
+            >
+              {activeItem === 'about' ? '+ Hakkında' : '- Hakkında'}
+            </MenuItem>
           </SubMenu>
         </Menu>
       </Sidebar>
