@@ -16,7 +16,7 @@ import {
 } from "../services/financeService";
 import { sendMessage } from "../services/chatService";
 
-const ChatContainer = () => {
+const ChatContainer = ({ selectedCharacter }) => {
   const [messages, setMessages] = useState([
     { id: 1, text: "Merhaba, size nasıl yardımcı olabilirim?", sender: "bot" },
   ]);
@@ -93,10 +93,10 @@ const ChatContainer = () => {
     setMessages([...messages, newMessage]);
 
     setTimeout(() => {
-      routeMessage(newMessageText);
+      const fullMessageText = `${selectedCharacter} ${newMessageText}`;
+      routeMessage(fullMessageText);
     }, 500);
   };
-
   const handleQuickReply = (replyText) => {
     const newMessage = {
       id: messages.length + 1,

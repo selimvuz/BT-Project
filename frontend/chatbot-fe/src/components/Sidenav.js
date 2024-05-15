@@ -5,11 +5,16 @@ import Login from "./Login";
 import Register from "./Register";
 import "../styles/Sidenav.css";
 
-function Sidenav() {
+function Sidenav({onCharacterSelect}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const sidenavRef = useRef();
+
+  const handleCharacterSelect = (character) => {
+    onCharacterSelect(character);
+    console.log(character)
+  };
 
   // Token'ı doğrulama işlevi
   const validateToken = async () => {
@@ -39,6 +44,7 @@ function Sidenav() {
       setIsLoggedIn(false);
     }
   };
+  
 
   useEffect(() => {
     validateToken(); // Bileşen yüklendiğinde token'ı doğrula
@@ -110,9 +116,9 @@ function Sidenav() {
             <MenuItem className="menu-item">- Gemini Pro</MenuItem>
           </SubMenu>
           <SubMenu label="Karakterler">
-            <MenuItem className="menu-item">- Gelecekten Bir Yolcu</MenuItem>
-            <MenuItem className="menu-item">- Şaka Ustası Leo</MenuItem>
-            <MenuItem className="menu-item">- Sokrates</MenuItem>
+            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Gelecekten Bir Yolcu")}>- Gelecekten Bir Yolcu</MenuItem>
+            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Şaka Ustası Leo")}>- Şaka Ustası Leo</MenuItem>
+            <MenuItem className="menu-item" onClick={() => handleCharacterSelect("Sokrates")}>- Sokrates</MenuItem>
           </SubMenu>
           <SubMenu label="Diğer">
             <MenuItem className="menu-item">- İletişim</MenuItem>
