@@ -25,9 +25,9 @@ pipe = pipeline("text-generation",
 def generate_output(user_query, label=""):
     prompt = f"{label} {user_query}" if label else user_query
     inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=64, num_return_sequences=1)
+    outputs = model.generate(**inputs, max_length=124, num_return_sequences=1)
     response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    first_len = 21 + len(user_query)
+    first_len = 21 + len(user_query) - len(label)
     return response_text[first_len:]
 
 @app.route('/generate', methods=['POST'])

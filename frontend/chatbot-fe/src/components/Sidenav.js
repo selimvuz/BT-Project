@@ -6,7 +6,6 @@ import Register from "./Register";
 import "../styles/Sidenav.css";
 
 function Sidenav({ onCharacterSelect }) {
-function Sidenav({ onCharacterSelect }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
@@ -15,7 +14,6 @@ function Sidenav({ onCharacterSelect }) {
 
   const handleCharacterSelect = (character) => {
     onCharacterSelect(character);
-    console.log(character);
   };
 
   const handleItemClick = (item) => {
@@ -149,7 +147,7 @@ function Sidenav({ onCharacterSelect }) {
             <MenuItem
               className="menu-item"
               onClick={() => {
-                handleCharacterSelect("Şaka Ustası Leo");
+                handleCharacterSelect("Şaka Ustası Leo     ");
                 handleItemClick('leo');
               }}
             >
@@ -158,7 +156,7 @@ function Sidenav({ onCharacterSelect }) {
             <MenuItem
               className="menu-item"
               onClick={() => {
-                handleCharacterSelect("Sokrates");
+                handleCharacterSelect("Sokrates            ");
                 handleItemClick('socrates');
               }}
             >
