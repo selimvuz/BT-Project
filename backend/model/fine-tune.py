@@ -5,7 +5,7 @@ from peft import LoraConfig, get_peft_model, TaskType
 from trl import SFTTrainer
 
 # Veri kümesini yükle
-df = pd.read_csv('karakterler.csv', quotechar='"')
+df = pd.read_csv('datasets/karakterler.csv', quotechar='"')
 df['text'] = df.apply(
     lambda row: f"{row['etiket']}:{row['soru']}\n{row['cevap']}", axis=1)
 dataset = Dataset.from_pandas(df[['text']])
