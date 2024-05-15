@@ -4,7 +4,7 @@ import Sidenav from "./components/Sidenav";
 import React, { useState } from "react";
 
 function App() {
-  const [selectedCharacter, setSelectedCharacter] = useState("Chatbot Application v0.0.1");
+  const [selectedCharacter, setSelectedCharacter] = useState("Chatbot Application v0.2");
 
   const handleCharacterSelect = (character) => {
     setSelectedCharacter(character);
