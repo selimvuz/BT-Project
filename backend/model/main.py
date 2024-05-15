@@ -27,7 +27,13 @@ def generate_output(user_query, label=""):
     inputs = tokenizer(prompt, return_tensors="pt")
     outputs = model.generate(**inputs, max_length=124, num_return_sequences=1)
     response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    first_len = 21 + len(user_query) - len(label)
+    
+    # Dinamik olarak first_len ayarlama
+    if label:
+        first_len = len(label) + len(user_query) + 1  # 1 boşluk karakteri için
+    else:
+        first_len = len(user_query)
+    
     return response_text[first_len:]
 
 @app.route('/generate', methods=['POST'])

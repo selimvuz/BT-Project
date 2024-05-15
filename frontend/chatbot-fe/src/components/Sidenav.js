@@ -147,7 +147,7 @@ function Sidenav({ onCharacterSelect }) {
             <MenuItem
               className="menu-item"
               onClick={() => {
-                handleCharacterSelect("Şaka Ustası Leo     ");
+                handleCharacterSelect("Şaka Ustası Leo");
                 handleItemClick('leo');
               }}
             >
@@ -156,7 +156,7 @@ function Sidenav({ onCharacterSelect }) {
             <MenuItem
               className="menu-item"
               onClick={() => {
-                handleCharacterSelect("Sokrates            ");
+                handleCharacterSelect("Sokrates");
                 handleItemClick('socrates');
               }}
             >
