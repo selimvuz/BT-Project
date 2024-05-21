@@ -25,7 +25,7 @@ pipe = pipeline("text-generation",
 def generate_output(user_query, label=""):
     prompt = f"{label} {user_query}" if label else user_query
     inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=124, num_return_sequences=1)
+    outputs = model.generate(**inputs, max_length=248, num_return_sequences=1)
     response_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
     # Dinamik olarak first_len ayarlama
