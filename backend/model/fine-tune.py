@@ -11,7 +11,7 @@ df['text'] = df.apply(
 dataset = Dataset.from_pandas(df[['text']])
 
 # Tokenizer ve model yükle
-model_name = "Trendyol/Trendyol-LLM-7b-chat-v1.0"
+model_name = "Trendyol/Trendyol-LLM-7b-base-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # 8-bit quantized modeli yükle
