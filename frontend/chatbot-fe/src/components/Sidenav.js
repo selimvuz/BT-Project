@@ -5,11 +5,10 @@ import Login from "./Login";
 import Register from "./Register";
 import "../styles/Sidenav.css";
 
-function Sidenav({ onCharacterSelect }) {
+function Sidenav({ onCharacterSelect, activeItem, onMenuItemClick }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [activeItem, setActiveItem] = useState(null); // Aktif butonun state'i
   const sidenavRef = useRef();
 
   const handleCharacterSelect = (character) => {
@@ -17,7 +16,7 @@ function Sidenav({ onCharacterSelect }) {
   };
 
   const handleItemClick = (item) => {
-    setActiveItem(item);
+    onMenuItemClick(item);
   };
 
   // Token'ı doğrulama işlevi

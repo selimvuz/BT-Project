@@ -18,7 +18,7 @@ import { sendMessage } from "../services/chatService";
 
 const ChatContainer = ({ selectedCharacter }) => {
   const [messages, setMessages] = useState([
-    { id: 1, text: "Merhaba, size nasıl yardımcı olabilirim?", sender: "bot" },
+    { id: 1, text: "Merhaba dostum, ben Sokrates. Bugün hangi konular üzerinde düşünmek istersin? Birlikte sorgulayarak doğruya ulaşmak için sabırsızlanıyorum. Yanıtlamamı istediğin herhangi bir soru var mı?", sender: "bot" },
   ]);
   const [askForCompanyName, setAskForCompanyName] = useState(false);
   const [companyName, setCompanyName] = useState("");
