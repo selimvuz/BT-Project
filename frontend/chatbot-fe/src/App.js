@@ -22,10 +22,20 @@ function App() {
       <header className="app-header">
         Karakterler v0.2 - {selectedCharacter}
       </header>
-      <Sidenav onCharacterSelect={handleCharacterSelect} activeItem={activeItem} onMenuItemClick={handleItemClick} />
+      <Sidenav
+        onCharacterSelect={handleCharacterSelect}
+        activeItem={activeItem}
+        onMenuItemClick={handleItemClick}
+      />
       <div className="main-container">
         <div className="chat-container">
-          {activeItem === "about" ? <About /> : activeItem === "contact" ? <Contact /> : <ChatContainer />}
+          {activeItem === "about" ? (
+            <About />
+          ) : activeItem === "contact" ? (
+            <Contact />
+          ) : (
+            <ChatContainer selectedCharacter={selectedCharacter} />
+          )}
         </div>
       </div>
     </div>
